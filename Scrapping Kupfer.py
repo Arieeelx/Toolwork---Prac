@@ -30,11 +30,9 @@ url_categorias = {
 def scrap_kupfer(url, categoria_nombre):
     navegador.get(url)
 
-
     data = []
 
     while True:
-
 
         elementos_listado = navegador.find_elements(By.CSS_SELECTOR, 'li.product-item')
         print(f"[{categoria_nombre}] {len(elementos_listado)} Items encontrados")
@@ -117,7 +115,7 @@ for i, (categoria, url) in enumerate(url_categorias.items(), 1):
     print(f" {len(datos_categoria)} productos scrapeados de {categoria}")
 
 df = pd.DataFrame(todos_los_datos)
-df.to_csv('scrapping.csv', index=False, encoding='utf-8-sig')
+df.to_csv('scrapping_Kupfer.csv', index=False, encoding='utf-8-sig')
 
 print(f"Total: {len(todos_los_datos)} productos scrapeados")
 
