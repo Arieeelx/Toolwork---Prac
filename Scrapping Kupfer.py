@@ -17,12 +17,12 @@ url_categorias = {
     #'equipos_herramientas_maquinas_industriales': 'https://www.b2b.kupfer.cl/equipos-herramientas-y-maquinarias-industriales.html?product_list_limit=36',
     #'mantencion_industrial': 'https://www.b2b.kupfer.cl/mantencion-industrial.html?product_list_limit=36',
     #'izaje_traccion': 'https://www.b2b.kupfer.cl/izaje-y-traccion.html?product_list_limit=36',
-    #'pesca_cultivo': 'https://www.b2b.kupfer.cl/pesca-y-cultivo.html?product_list_limit=36',
+    'pesca_cultivo': 'https://www.b2b.kupfer.cl/pesca-y-cultivo.html?product_list_limit=36',
     #'amarre': 'https://www.b2b.kupfer.cl/amarre.html?product_list_limit=36',
     #'potencia_oleohidraulica': 'https://www.b2b.kupfer.cl/potencia-oleohidraulica.html?product_list_limit=36',
     #'filtracion': 'https://www.b2b.kupfer.cl/filtracion.html?product_list_limit=36',
     #'mangueras_conexiones': 'https://www.b2b.kupfer.cl/mangueras-y-conexiones.html?product_list_limit=36#',
-    'manejo_fluido': 'https://www.b2b.kupfer.cl/productos-con-acuerdo/manejo-de-fluido.html?product_list_limit=36',
+    #'manejo_fluido': 'https://www.b2b.kupfer.cl/productos-con-acuerdo/manejo-de-fluido.html?product_list_limit=36',
     'equipos_energia': 'https://www.b2b.kupfer.cl/catalog/category/view/s/equipos-de-energia/id/1602/'
 }
 
@@ -75,7 +75,7 @@ def scrap_kupfer(url, categoria_nombre):
                     'Sku': sku_text,
                     'Precio oferta': precio_oferta_text,
                     'Precio normal': precio_normal_text,
-                    'Imagen': imagen if imagen else 'N/A',
+                    'Imagen': imagen if imagen else 'NA',
                 })
                 #AVISO DE QUE ARCHIVO SE VA AGREGANDO Y SUS PRECIOS RESPECTIVOS
                 print(f"Se han encontrado {titulo_elemento.text}, precio oferta: {precio_oferta_text}, precio normal: {precio_normal_text}")
