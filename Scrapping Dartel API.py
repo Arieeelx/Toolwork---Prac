@@ -108,7 +108,6 @@ def scrap_dartel_api(url, categoria_nombre):
 
                                 #COLUMNAS DEL CSV
                                 data.append({
-                                    'Sellers': seller,
                                     'Categoria': categoria_nombre,
                                     'Marca': marca,
                                     'Titulo': titulo,
@@ -123,9 +122,8 @@ def scrap_dartel_api(url, categoria_nombre):
                                     'URL': f"https://www.dartel.cl{producto.get('link', '')}",
                                 })
                     else:
-                        # Producto sin items
+                        # PRODUCTO SIN ITEMS
                         data.append({
-                            'Sellers': 'NA',
                             'Categoria': categoria_nombre,
                             'Marca': marca,
                             'Titulo': titulo,
@@ -146,7 +144,7 @@ def scrap_dartel_api(url, categoria_nombre):
 
             print(f"  Página {pagina + 1}: {len(productos)} productos | Acumulado: {len(data)}")
             pagina += 1
-            time.sleep(0.5)  # Pausa entre requests
+            time.sleep(0.5)  # STOP ENTRE REQUEST'S
 
         except Exception as e:
             print(f"  ✗ Error en request: {e}")
@@ -163,12 +161,12 @@ print("\n" + "=" * 70)
 print("SCRAPING COMPLETO DE DARTEL VÍA API VTEX")
 print("=" * 70 + "\n")
 
-# Opción 1: Obtener categorías automáticamente
+# CLASIFICACION DE CATEGORIAS AUTOMATICO:
 print("Obteniendo lista de categorías...\n")
 url_categorias = obtener_todas_las_categorias()
 
 if not url_categorias:
-    # Opción 2: Si falla, usar lista manual
+    # EN CASO DE ERROR: LISTA MANUAL DE USO
     print("Usando lista manual de categorías\n")
     url_categorias = {
         'automatizacion_control': 'https://www.dartel.cl/automatizacion-y-control',
@@ -204,7 +202,7 @@ for i, (categoria, url) in enumerate(url_categorias.items(), 1):
     print(f"✓ {len(datos_categoria)} productos scrapeados de {categoria}")
     print("-" * 70)
 
-# Guardar en CSV
+# ARCHIVO CSV
 df = pd.DataFrame(todos_los_datos)
 df.to_csv('scrapping_Dartel.csv', index=False, encoding='utf-8-sig')
 
@@ -213,5 +211,5 @@ print(f"✓ SCRAPING COMPLETADO")
 print(f"✓ Total productos: {len(todos_los_datos)}")
 print(f"✓ Con stock: {len(df[df['Stock'] > 0])}")
 print(f"✓ Sin stock: {len(df[df['Stock'] == 0])}")
-print(f"✓ Archivo: dartel_completo_con_stock.csv")
+print(f"✓ Archivo: scrapping_Dartel.csv")
 print("=" * 70 + "\n")
