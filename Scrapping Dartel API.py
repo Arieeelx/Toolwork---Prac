@@ -50,7 +50,8 @@ def scrap_dartel_api(url, categoria_nombre):
 
     data = []
     pagina = 0
-    max_paginas = 100  # <<<<<<<<Límite de seguridad>>>>>>>>
+    max_paginas = 200 # <<<<<<<<Límite de seguridad>>>>>>>>
+    intentos_vacios = 0
 
     print(f"[{categoria_nombre}] Consultando API...")
 
@@ -61,14 +62,24 @@ def scrap_dartel_api(url, categoria_nombre):
         try:
             response = requests.get(url_paginada, timeout=15)
 
-            if response.status_code != 200:
-                print(f"  ⚠️ Status code: {response.status_code}")
+            if response.status_code not in  [200, 206]:
+                print(f"  ⚠️ Status code: {response.status_code} - Deteniendo categoría")
                 break
 
             productos = response.json()
 
             if not productos or len(productos) == 0:
-                break
+                intentos_vacios += 1
+                print(f" Página {pagina + 1} vacía (Intento {intentos_vacios}/3")
+
+                if intentos_vacios >= 3:
+                    print(f" Fin de productos después de 3 intentos vacíos")
+                    break
+
+                pagina += 1
+                continue
+
+            intentos_vacios = 0
 
             for producto in productos:
                 try:
@@ -110,11 +121,11 @@ def scrap_dartel_api(url, categoria_nombre):
                                 data.append({
                                     'Categoria': categoria_nombre,
                                     'Marca': marca,
-                                    'Titulo': titulo,
                                     'Nombre_Item': nombre_item,
+                                    'Descripción': descripcion,
                                     'Product_ID': product_id,
                                     'SKU': sku,
-                                    'EAN': ean,
+                                    'Código Proovedor': ean,
                                     'Stock': stock,
                                     'Precio': f"${precio:,.0f}" if precio > 0 else 'Sin precio',
                                     'Precio_Lista': f"${precio_lista:,.0f}" if precio_lista > 0 else 'Sin precio',
@@ -126,12 +137,12 @@ def scrap_dartel_api(url, categoria_nombre):
                         data.append({
                             'Categoria': categoria_nombre,
                             'Marca': marca,
-                            'Titulo': titulo,
                             'Nombre_Item': titulo,
+                            'Descripción': descripcion,
                             'Product_ID': product_id,
                             'SKU': 'N/A',
-                            'EAN': 'N/A',
-                            'Stock': 0,
+                            'Código Proovedor': 'NA',
+                            'Stock': 'Sin stock',
                             'Precio': 'Sin precio',
                             'Precio_Lista': 'Sin precio',
                             'Imagen': 'N/A',
