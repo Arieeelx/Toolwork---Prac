@@ -53,9 +53,15 @@ def scrap_kupfer(url, categoria_nombre):
                     precio_oferta_elemento = None
 
                 try:
-                    precio_normal_elemento = elemento.find_element(By.CSS_SELECTOR, 'span.price')
+                    precio_normal_elemento = elemento.find_element(By.CSS_SELECTOR, 'span.old-price span.price')
                 except NoSuchElementException:
                     precio_normal_elemento = None
+
+                if precio_oferta_elemento is None and precio_normal_elemento is None:
+                    try:
+                        precio_normal_elemento = elemento.find_element(By.CSS_SELECTOR, 'span.price')
+                    except NoSuchElementException:
+                        precio_normal_elemento = None
 
                 try:
                     imagen = elemento.find_element(By.TAG_NAME, 'img').get_attribute('src')
@@ -78,7 +84,7 @@ def scrap_kupfer(url, categoria_nombre):
                     'Imagen': imagen if imagen else 'NA',
                 })
                 #AVISO DE QUE ARCHIVO SE VA AGREGANDO Y SUS PRECIOS RESPECTIVOS
-                print(f"->{titulo_elemento.text}, precio oferta: {precio_oferta_text}, precio normal: {precio_normal_text}")
+                print(f"->{titulo_elemento.text} || precio oferta: {precio_oferta_text} || precio normal: {precio_normal_text} || Sku: {sku_text}")
 
             except NoSuchElementException as e:
                 print(f"x Error: {e}")
