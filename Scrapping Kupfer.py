@@ -78,7 +78,7 @@ def scrap_kupfer(url, categoria_nombre):
                     'Imagen': imagen if imagen else 'NA',
                 })
                 #AVISO DE QUE ARCHIVO SE VA AGREGANDO Y SUS PRECIOS RESPECTIVOS
-                print(f"Se han encontrado {titulo_elemento.text}, precio oferta: {precio_oferta_text}, precio normal: {precio_normal_text}")
+                print(f"->{titulo_elemento.text}, precio oferta: {precio_oferta_text}, precio normal: {precio_normal_text}")
 
             except NoSuchElementException as e:
                 print(f"x Error: {e}")
