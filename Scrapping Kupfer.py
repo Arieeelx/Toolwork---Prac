@@ -108,9 +108,50 @@ def scrap_kupfer(url, categoria_nombre):
     #IMPRIME EL VALOR A DATA
     return data
 
+# ========================================
+# INICIO DEL NAVEGADOR
+# ========================================
+
 navegador = webdriver.Chrome()
 navegador.maximize_window()
 wait = WebDriverWait(navegador, 10)
+
+# ========================================
+# LOGIN
+# ========================================
+print("🔐 Iniciando sesión en Kupfer...")
+
+navegador.get("https://www.b2b.kupfer.cl/customer/account/login")
+time.sleep(3)
+
+try:
+    # Ingresar credenciales (AJUSTA LOS SELECTORES SI ES NECESARIO)
+    email_input = wait.until(EC.presence_of_element_located((By.ID, "email")))
+    password_input = navegador.find_element(By.ID, "pass")
+
+    email_input.send_keys("SSSS")
+    password_input.send_keys("SSS")
+
+    login_button = navegador.find_element(By.CSS_SELECTOR, "button.action.login.primary")
+    login_button.click()
+
+    print("✓ Credenciales ingresadas")
+    time.sleep(5)
+
+    # Verificar login exitoso
+    if "login" not in navegador.current_url.lower():
+        print("✅ Login exitoso\n")
+    else:
+        print("❌ Login falló - Verificar credenciales")
+        navegador.quit()
+        exit()
+
+except Exception as e:
+    print(f"✗ Error en login: {e}\n")
+    navegador.quit()
+    exit()
+
+
 
 todos_los_datos = []
 
