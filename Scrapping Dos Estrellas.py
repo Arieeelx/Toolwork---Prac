@@ -1,5 +1,3 @@
-from operator import index
-
 from selenium import webdriver
 from selenium.common import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.by import By
@@ -13,7 +11,7 @@ navegador.maximize_window()
 wait = WebDriverWait(navegador, 10)
 
 # ========================================
-# PASO 1: HACER LOGIN
+# LOGIN PARA VER PRECIOS
 # ========================================
 
 print("🔐 Iniciando sesión en Dos Estrellas...")
@@ -52,9 +50,7 @@ except Exception as e:
     navegador.quit()
     exit()
 
-# ========================================
-# PASO 2: EMPEZAMOS CON SCRAPPING
-# ========================================
+# VARIABLES
 
 categoria = "https://dosestrellas.cl/lineas/5/agricultura-jardin"
 
@@ -66,6 +62,10 @@ time.sleep(1)
 navegador.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 time.sleep(1)
 data = []
+
+# ========================================
+# FUNCION SCRAPPING
+# ========================================
 
 def scrap_dos_estrellas():
 

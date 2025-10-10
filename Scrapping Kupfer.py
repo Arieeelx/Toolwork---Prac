@@ -6,7 +6,10 @@ import pandas as pd
 from selenium.webdriver.support.wait import WebDriverWait
 import time
 
-#CONTENIDO DE LOS URL'S DE CATEGORÍAS CON CANTIDAD MÁX DE 36 POR PÁGINA
+# ========================================
+# CATEGORIAS
+# ========================================
+
 url_categorias = {
     #'seguridad_industrial': 'https://www.b2b.kupfer.cl/productos-con-acuerdo/seguridad-industrial.html?product_list_limit=36',
     #'aceros_estructurales': 'https://www.b2b.kupfer.cl/aceros-estructurales.html?product_list_limit=36',
@@ -26,7 +29,10 @@ url_categorias = {
     'equipos_energia': 'https://www.b2b.kupfer.cl/catalog/category/view/s/equipos-de-energia/id/1602/'
 }
 
-#FUNCIÓN PRINCIPAL QUE REALIZA SCRAPPING PARA KUPFER
+# ========================================
+# FUNCION PRINCIPAL SCRAP
+# ========================================
+
 def scrap_kupfer(url, categoria_nombre):
     navegador.get(url)
 
@@ -110,7 +116,10 @@ todos_los_datos = []
 
 print(f"INICIANDO SCRAPING DE {len(url_categorias)} CATEGORÍAS")
 
-#BUCLE PARA COMPLETAR SCRAPPING EN LOS URL'S DE CATEGORÍAS
+# ========================================
+# BUCLE DE CATEGORIAS
+# ========================================
+
 for i, (categoria, url) in enumerate(url_categorias.items(), 1):
     print(f"Scrapeando categoría: {categoria.upper()}")
     print(f"URL: {url}")
@@ -120,6 +129,7 @@ for i, (categoria, url) in enumerate(url_categorias.items(), 1):
 
     print(f" {len(datos_categoria)} productos scrapeados de {categoria}")
 
+#GUARDAR DATOS CSV
 df = pd.DataFrame(todos_los_datos)
 df.to_csv('scrapping_Kupfer.csv', index=False, encoding='utf-8-sig')
 
