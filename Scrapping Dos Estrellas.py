@@ -41,12 +41,12 @@ try:
     if "login" not in navegador.current_url.lower():
         print("Login exitoso")
     else:
-        print("Login falló - Verificar credenciales o selectores")
+        print("✅ Login falló - Verificar credenciales o selectores")
         navegador.quit()
         exit()
 
 except Exception as e:
-    print(f"✗ Error en login: {e}\n")
+    print(f"❌ Error en login: {e}\n")
     navegador.quit()
     exit()
 
