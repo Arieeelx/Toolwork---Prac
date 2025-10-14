@@ -130,34 +130,32 @@ def scrap_marsella_api(url, categoria_nombre):
 
                                 # COLUMNAS DEL CSV
                                 data.append({
-                                    'Categoria': categoria_nombre,
-                                    'Marca': marca,
-                                    'Titulo': nombre_item,
-                                    'Descripción': descripcion,
                                     'Product_ID': product_id,
                                     'SKU': sku,
+                                    'Titulo': nombre_item,
+                                    'Descripción': descripcion,
+                                    'Marca': marca,
+                                    'Categoria': categoria_nombre,
                                     'Código Proovedor': ean,
-                                    'Stock': stock,
                                     'Precio': f"${precio:,.0f}" if precio > 0 else 'Sin precio',
                                     'Precio_lista': f"${precio_lista:,.0f}" if precio_lista > 0 else "Sin precio",
+                                    'Stock': stock,
                                     'Imagen': imagen,
-                                    'URL': f"https://www.ferreteriamarsella.cl{producto.get('link', '')}",
                                 })
                     else:
                         # PRODUCTO SIN ITEMS
                         data.append({
-                            'Categoria': categoria_nombre,
-                            'Marca': marca,
-                            'Titulo': titulo,
-                            'Descripción': 'Sin descripcion',
                             'Product_ID': 'NA',
                             'SKU': 'N/A',
+                            'Titulo': titulo,
+                            'Descripción': 'Sin descripcion',
+                            'Marca': marca,
+                            'Categoria': categoria_nombre,
                             'Código Proovedor': 'NA',
-                            'Stock': 'Sin stock',
                             'Precio': 'Sin precio',
                             'Precio_Lista': 'Sin precio',
+                            'Stock': 'Sin stock',
                             'Imagen': 'N/A',
-                            'URL': f"https://www.ferreteriamarsella.cl{producto.get('link', '')}",
                         })
 
                 except Exception as e:
@@ -174,10 +172,10 @@ def scrap_marsella_api(url, categoria_nombre):
 
     return data
 
+# EXTRAER SKU O REFERENCIA DE LA PÁGINA CÓDIGO DE MARSELLA
+
 def extraer_sku_correcto(item):
-    """
-    Extraer SKU desde referenceId
-    """
+
     referencias = item.get('referenceId', [])
 
     # Si tiene referenceId con valor

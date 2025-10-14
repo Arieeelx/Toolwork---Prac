@@ -60,6 +60,7 @@ def scrap_dartel_api(url, categoria_nombre):
 
     while pagina < max_paginas:
         # VTEX PAG 50-50
+
         url_paginada = f"{api_url}?_from={pagina * 50}&_to={(pagina + 1) * 50 - 1}"
 
         try:
@@ -98,7 +99,7 @@ def scrap_dartel_api(url, categoria_nombre):
                     if items:
                         for item in items:
                             # SKU
-                            sku = item.get('itemId', product_id)
+                            sku = extraer_sku_correcto(item)
 
                             # SI PRODUCTO ESTA REPETIDO EN LA CATEGORIA A BUSCAR NO LO CONSIDERA
                             if sku in sku_vistos_en_categoria:
@@ -130,34 +131,32 @@ def scrap_dartel_api(url, categoria_nombre):
 
                                 #COLUMNAS DEL CSV
                                 data.append({
-                                    'Categoria': categoria_nombre,
-                                    'Marca': marca,
-                                    'Titulo': nombre_item,
-                                    'Descripción': descripcion,
                                     'Product_ID': product_id,
                                     'SKU': sku,
+                                    'Titulo': nombre_item,
+                                    'Descripción': descripcion,
+                                    'Marca': marca,
+                                    'Categoria': categoria_nombre,
                                     'Código Proovedor': ean,
-                                    'Stock': stock,
                                     'Precio': f"${precio:,.0f}" if precio > 0 else 'Sin precio',
                                     'Precio Lista': f"${precio_lista:,.0f}" if precio_lista > 0 else 'Sin precio',
+                                    'Stock': stock,
                                     'Imagen': imagen,
-                                    'URL': f"https://www.dartel.cl{producto.get('link', '')}",
                                 })
                     else:
                         # PRODUCTO SIN ITEMS
                         data.append({
-                            'Categoria': categoria_nombre,
-                            'Marca': marca,
-                            'Titulo': titulo,
-                            'Descripción': descripcion,
                             'Product_ID': product_id,
                             'SKU': 'N/A',
+                            'Titulo': titulo,
+                            'Descripción': descripcion,
+                            'Marca': marca,
+                            'Categoria': categoria_nombre,
                             'Código Proovedor': 'NA',
-                            'Stock': 'Sin stock',
                             'Precio': 'Sin precio',
                             'Precio Lista': 'Sin precio',
+                            'Stock': 'Sin stock',
                             'Imagen': 'N/A',
-                            'URL': f"https://www.dartel.cl{producto.get('link', '')}",
                         })
 
                 except Exception as e:
@@ -173,6 +172,24 @@ def scrap_dartel_api(url, categoria_nombre):
             break
 
     return data
+
+# EXTRAER SKU O REFERENCIA DE LA PÁGINA CÓDIGO DE DARTEL
+
+def extraer_sku_correcto(item):
+
+    referencias = item.get('referenceId', [])
+
+    # Si tiene referenceId con valor
+    if referencias and len(referencias) > 0:
+        # Tomar el primer referenceId
+        ref = referencias[0]
+        sku = ref.get('Value', '')
+
+        if sku:  # Si tiene valor
+            return sku
+
+    # Fallback: usar itemId si no hay referenceId
+    return item.get('itemId', 'N/A')
 
 
 # ========================================
