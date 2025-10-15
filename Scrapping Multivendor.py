@@ -11,30 +11,27 @@ navegador = webdriver.Chrome()
 navegador.maximize_window()
 wait = WebDriverWait(navegador, 10)
 
-# ========================================
-# LOGIN PARA VER PRECIOS
-# ========================================
-
 print("🔐 Iniciando sesión en Multivendor!...")
 
 navegador.get("https://tienda.multivendor.cl/ingresar")
 
+# <<<<LOGIN PARA VER PRECIOS>>>>
 try:
     # REEMPLAZA CON TUS CREDENCIALES
     email_input = wait.until(EC.element_to_be_clickable((By.NAME, "code")))  # Ajustar selector
     password_input = wait.until(EC.element_to_be_clickable((By.NAME, "password")))  # Ajustar selector
 
-    email_input.send_keys("sss")
-    password_input.send_keys("sss")
+    email_input.send_keys("ssss")
+    password_input.send_keys("ssss")
 
-    # Click en botón login (ajustar selector)
+    # BOTON LOGIN
     login_button = navegador.find_element(By.CSS_SELECTOR, "form button")
     login_button.click()
 
     print("✓ Credenciales ingresadas")
-    time.sleep(1)  # Esperar que cargue después del login
+    time.sleep(1)
 
-    # Verificar si el login fue exitoso
+    # CHECK DE LOGIN
     if "login" not in navegador.current_url.lower():
         print("✅ Login exitoso")
     else:
@@ -69,6 +66,8 @@ while True:
         pagina = pagina + 1
 
         print(f"Scroll realizado, procediendo a cargar más contenido, scroll n°: {pagina}")
+
+        time.sleep(.5)
 
     except TimeoutException:
         print("✅ Scroll completado. Preparando SCRAP")
@@ -149,7 +148,7 @@ def scrap_multivendor():
 data = scrap_multivendor()
 
 df = pd.DataFrame(data)
-df.to_csv("scrapping_Multivendor.csv", index=False, encoding='utf-8')
+df.to_csv("Scrapping_csv/scrapping_Multivendor.csv", index=False, encoding='utf-8')
 
 print("\n" + "=" * 70)
 print(f"✓ SCRAPING COMPLETADO")
