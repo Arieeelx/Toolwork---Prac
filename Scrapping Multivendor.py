@@ -24,8 +24,8 @@ try:
     email_input = wait.until(EC.element_to_be_clickable((By.NAME, "code")))  # Ajustar selector
     password_input = wait.until(EC.element_to_be_clickable((By.NAME, "password")))  # Ajustar selector
 
-    email_input.send_keys("SSSSS")
-    password_input.send_keys("SSSSSS")
+    email_input.send_keys("sss")
+    password_input.send_keys("sss")
 
     # Click en botón login (ajustar selector)
     login_button = navegador.find_element(By.CSS_SELECTOR, "form button")
@@ -82,7 +82,8 @@ def scrap_multivendor():
 
         elementos_listado = navegador.find_elements(By.CSS_SELECTOR, "div.sc-f671739f-0.djafFO")
 
-        print(f"Productos: {len(elementos_listado)}")
+        print("=" * 70)
+        print(f"{len(elementos_listado)} Items encontrados")
 
         for elemento in elementos_listado:
             try:
@@ -99,8 +100,8 @@ def scrap_multivendor():
                         marca_elemento = etiquetas_p_m[0]
                         sku_elemento = etiquetas_p_m[1]
                     else:
-                        marca_elemento = "NA"
-                        sku_elemento = "NA"
+                        marca_elemento = None
+                        sku_elemento = None
                 except NoSuchElementException:
                     sku_elemento = None
                     marca_elemento = None
@@ -124,23 +125,21 @@ def scrap_multivendor():
 
 
                 titulo_text = titulo_elemento.text if titulo_elemento else "NA"
-                sku_text = sku_elemento.text if sku_elemento else "NA"
-                stock_text = stock_elemento.text if stock_elemento else "NA"
+                sku_text = sku_elemento.text.replace('SKU: ', '').strip() if sku_elemento else 'N/A'
+                stock_text = stock_elemento.text.replace(' en stock', '') if stock_elemento else "NA"
                 precio_actual_text = precio_actual_elemento.text if precio_actual_elemento else "NA"
                 precio_antiguo_text = precio_antiguo_elemento.text if precio_antiguo_elemento else "NA"
                 marca_text = marca_elemento.text if marca_elemento else "NA"
 
                 data.append({
-                    "Titulo": titulo_text,
                     "Sku": sku_text,
-                    "Stock": stock_text,
+                    "Titulo": titulo_text,
+                    "Marca": marca_text,
                     "Precio antiguo": precio_antiguo_text,
                     "Precio actual": precio_actual_text,
-                    "Marca": marca_text,
+                    "Stock": stock_text,
                     "Link": imagen if imagen else 'NA',
                 })
-
-                print(f"->{titulo_text}")
 
             except Exception as e:
                 print(f"Ocurrrio un error: {e}")
@@ -152,13 +151,10 @@ data = scrap_multivendor()
 df = pd.DataFrame(data)
 df.to_csv("scrapping_Multivendor.csv", index=False, encoding='utf-8')
 
+print("\n" + "=" * 70)
+print(f"✓ SCRAPING COMPLETADO")
+print(f"✓ Total productos: {len(data)}")
+print(f"✓ Archivo: scrapping_Kupfer.csv")
+print("=" * 70 + "\n")
+
 navegador.quit()
-
-
-
-
-
-
-
-
-
