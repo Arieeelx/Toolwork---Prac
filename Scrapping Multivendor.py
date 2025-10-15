@@ -117,6 +117,11 @@ def scrap_multivendor():
                 except NoSuchElementException:
                     stock_elemento = None
 
+                try:
+                    imagen = elemento.find_element(By.TAG_NAME, 'img').get_attribute('src')
+                except NoSuchElementException:
+                    imagen = None
+
 
                 titulo_text = titulo_elemento.text if titulo_elemento else "NA"
                 sku_text = sku_elemento.text if sku_elemento else "NA"
@@ -132,6 +137,7 @@ def scrap_multivendor():
                     "Precio antiguo": precio_antiguo_text,
                     "Precio actual": precio_actual_text,
                     "Marca": marca_text,
+                    "Link": imagen if imagen else 'NA',
                 })
 
                 print(f"->{titulo_text}")
