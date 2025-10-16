@@ -35,22 +35,28 @@ def extraer_producto(url_producto):
             texto = 'NA'
 
         # Imagen
-        div_imagen = soup_producto.find('div', class_='main-product-image')
-        imagen_url = 'NA'
-        if div_imagen:
-            img = div_imagen.find('img')
-            if img:
+        div_sin_imagen = soup_producto.find('div', class_='product-page-no-image')
+
+        if div_sin_imagen:
+            imagen_url = 'Sin imagen'
+        else:
+            div_imagen = soup_producto.find('div', class_='main-product-image')
+
+            if div_imagen:
+                img = div_imagen.find('img')
                 imagen_url = img.get('src')
-                # Convertir URL relativa a absoluta si es necesario
+
                 if imagen_url and not imagen_url.startswith('http'):
                     imagen_url = f"https://www.tecnocomae.cl{imagen_url}"
+            else:
+                imagen_url = 'NA'
 
         info_producto = {
             'Sku': sku.text.strip() if sku else 'NA',
             'Nombre': nombre.text.strip() if nombre else 'NA',
             'Descripción': texto,
             'Marca': marca.text.strip() if marca else 'NA',
-            'Precio_compra': precio_compra.text.strip() if precio_compra else 'NA',
+            'Precio_compra': precio_compra.text.replace(' CLP', '').strip() if precio_compra else 'NA',
             'Precio_antiguo': precio_antiguo.text.strip() if precio_antiguo else 'NA',
             'Stock': stock.text.strip() if stock else 'NA',
             'Imagen': imagen_url,
@@ -85,7 +91,7 @@ for pagina in range(1, 40):
             urls_productos.append(url_producto)
 
     # Procesar X productos en paralelo
-    with ThreadPoolExecutor(max_workers=3) as executor:
+    with ThreadPoolExecutor(max_workers=6) as executor:
         futures = [executor.submit(extraer_producto, url) for url in urls_productos]
 
         for future in as_completed(futures):
@@ -96,7 +102,7 @@ for pagina in range(1, 40):
     time.sleep(2)
 
 df = pd.DataFrame(todos_productos)
-df.to_csv("productos_bahco.csv", index=False, encoding='utf-8')
+df.to_csv("Scrapping_csv/productos_bahco.csv", index=False, encoding='utf-8')
 
 print("📁 Datos guardados en 'productos_bahco.csv'")
 

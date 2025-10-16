@@ -125,7 +125,7 @@ def scrap_multivendor():
 
                 titulo_text = titulo_elemento.text if titulo_elemento else "NA"
                 sku_text = sku_elemento.text.replace('SKU: ', '').strip() if sku_elemento else 'N/A'
-                stock_text = stock_elemento.text.replace(' en stock', '') if stock_elemento else "NA"
+                stock_text = stock_elemento.text.replace(' en stock', '').strip() if stock_elemento else "NA"
                 precio_actual_text = precio_actual_elemento.text if precio_actual_elemento else "NA"
                 precio_antiguo_text = precio_antiguo_elemento.text if precio_antiguo_elemento else "NA"
                 marca_text = marca_elemento.text if marca_elemento else "NA"
